@@ -1,0 +1,6 @@
+$dokka.format:gfm
+$dokka.linkExtension:md
+
+com.petersamokhin.vksdk.android.auth
+com.petersamokhin.vksdk.android.auth.error
+com.petersamokhin.vksdk.android.auth.model

@@ -28,7 +28,8 @@ object VkAuth {
     const val VK_API_VERSION_DEFAULT = 5.103
     const val VK_REDIRECT_URI_DEFAULT = "https://oauth.vk.com/blank.html"
 
-    private const val INFO_RESPONSE_TYPE_NOT_SUPPORTED = "Specifying the response_type is not available with the official VK App, so it can not be used"
+    private const val INFO_RESPONSE_TYPE_NOT_SUPPORTED =
+        "Specifying the response_type is not available with the official VK App, so it can not be used"
 
     private const val VK_EXTRA_CLIENT_ID = "client_id"
     private const val VK_EXTRA_REVOKE = "revoke"
@@ -64,7 +65,8 @@ object VkAuth {
      */
     @JvmStatic
     @CheckResult
-    fun parseResult(requestCode: Int, resultCode: Int, data: Intent?): VkAuthResult? = VkResultParser.parse(requestCode, resultCode, data)
+    fun parseResult(requestCode: Int, resultCode: Int, data: Intent?): VkAuthResult? =
+        VkResultParser.parse(requestCode, resultCode, data)
 
     /**
      * Login with VK using the available methods:
@@ -86,16 +88,18 @@ object VkAuth {
         apiVersion: Double = VK_API_VERSION_DEFAULT,
         listener: ResultListener
     ): DisposableItem {
-        return loginWithApp(fragmentActivity, AuthParams(
-            clientId,
-            responseType,
-            scopes,
-            redirectUri,
-            display,
-            state,
-            revoke,
-            apiVersion
-        ), listener)
+        return loginWithApp(
+            fragmentActivity, AuthParams(
+                clientId,
+                responseType,
+                scopes,
+                redirectUri,
+                display,
+                state,
+                revoke,
+                apiVersion
+            ), listener
+        )
     }
 
     /**
@@ -118,16 +122,18 @@ object VkAuth {
         apiVersion: Double = VK_API_VERSION_DEFAULT,
         listener: (VkAuthResult) -> Unit
     ): DisposableItem {
-        return loginWithApp(fragmentActivity, AuthParams(
-            clientId,
-            responseType,
-            scopes,
-            redirectUri,
-            display,
-            state,
-            revoke,
-            apiVersion
-        ), listener)
+        return loginWithApp(
+            fragmentActivity, AuthParams(
+                clientId,
+                responseType,
+                scopes,
+                redirectUri,
+                display,
+                state,
+                revoke,
+                apiVersion
+            ), listener
+        )
     }
 
     /**
@@ -200,16 +206,18 @@ object VkAuth {
         apiVersion: Double = VK_API_VERSION_DEFAULT,
         listener: ResultListener
     ): DisposableItem {
-        return loginWithWebView(fragmentActivity, AuthParams(
-            clientId,
-            responseType,
-            scopes,
-            redirectUri,
-            display,
-            state,
-            revoke,
-            apiVersion
-        ), listener)
+        return loginWithWebView(
+            fragmentActivity, AuthParams(
+                clientId,
+                responseType,
+                scopes,
+                redirectUri,
+                display,
+                state,
+                revoke,
+                apiVersion
+            ), listener
+        )
     }
 
     /**
@@ -232,16 +240,18 @@ object VkAuth {
         apiVersion: Double = VK_API_VERSION_DEFAULT,
         listener: (VkAuthResult) -> Unit
     ): DisposableItem {
-        return loginWithWebView(fragmentActivity, AuthParams(
-            clientId,
-            responseType,
-            scopes,
-            redirectUri,
-            display,
-            state,
-            revoke,
-            apiVersion
-        ), listener)
+        return loginWithWebView(
+            fragmentActivity, AuthParams(
+                clientId,
+                responseType,
+                scopes,
+                redirectUri,
+                display,
+                state,
+                revoke,
+                apiVersion
+            ), listener
+        )
     }
 
     /**
@@ -301,23 +311,25 @@ object VkAuth {
         clientId: Int,
         responseType: ResponseType,
         scopes: List<Scope> = listOf(),
-        redirectUri: String = VK_REDIRECT_URI_DEFAULT,
+        redirectUri: String? = VK_REDIRECT_URI_DEFAULT,
         display: Display = Display.Mobile,
         state: String = "",
         revoke: Boolean = true,
         apiVersion: Double = VK_API_VERSION_DEFAULT,
         listener: ResultListener
     ): DisposableItem {
-        return login(fragmentActivity, AuthParams(
-            clientId,
-            responseType,
-            scopes,
-            redirectUri,
-            display,
-            state,
-            revoke,
-            apiVersion
-        ), listener)
+        return login(
+            fragmentActivity, AuthParams(
+                clientId,
+                responseType,
+                scopes,
+                redirectUri,
+                display,
+                state,
+                revoke,
+                apiVersion
+            ), listener
+        )
     }
 
     /**
@@ -333,7 +345,7 @@ object VkAuth {
         clientId: Int,
         responseType: ResponseType,
         scopes: List<Scope> = listOf(),
-        redirectUri: String = VK_REDIRECT_URI_DEFAULT,
+        redirectUri: String? = VK_REDIRECT_URI_DEFAULT,
         display: Display = Display.Mobile,
         state: String = "",
         revoke: Boolean = true,
@@ -383,6 +395,7 @@ object VkAuth {
                 )
             }
             ResponseType.Code -> {
+                Log.e("urll", authParams.toString())
                 Log.w(LOG_TAG, INFO_RESPONSE_TYPE_NOT_SUPPORTED)
                 loginHidden(
                     fragmentActivity,
@@ -424,15 +437,21 @@ object VkAuth {
                     intent,
                     VK_AUTH_CODE,
                     object : ActivityResultListener {
-                        override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-                            VkResultParser.parse(requestCode, resultCode, data)?.also(listener::onResult)
+                        override fun onActivityResult(
+                            requestCode: Int,
+                            resultCode: Int,
+                            data: Intent?
+                        ) {
+                            VkResultParser.parse(requestCode, resultCode, data)
+                                ?.also(listener::onResult)
 
-                            fragmentActivity.supportFragmentManager.findFragmentByTag(FRAGMENT_TAG)?.also {
-                                fragmentActivity.supportFragmentManager
-                                    .beginTransaction()
-                                    .remove(it)
-                                    .commitAllowingStateLoss()
-                            }
+                            fragmentActivity.supportFragmentManager.findFragmentByTag(FRAGMENT_TAG)
+                                ?.also {
+                                    fragmentActivity.supportFragmentManager
+                                        .beginTransaction()
+                                        .remove(it)
+                                        .commitAllowingStateLoss()
+                                }
                         }
                     }
                 )
@@ -467,16 +486,18 @@ object VkAuth {
         revoke: Boolean = true,
         apiVersion: Double = VK_API_VERSION_DEFAULT
     ) {
-        login(activity, AuthParams(
-            clientId = clientId,
-            responseType = responseType,
-            scope = scopes.sumBy { it.intValue }.toString(),
-            redirectUri = redirectUri,
-            display = display,
-            state = state,
-            revoke = revoke,
-            apiVersion = apiVersion
-        ))
+        login(
+            activity, AuthParams(
+                clientId = clientId,
+                responseType = responseType,
+                scope = scopes.sumBy { it.intValue }.toString(),
+                redirectUri = redirectUri,
+                display = display,
+                state = state,
+                revoke = revoke,
+                apiVersion = apiVersion
+            )
+        )
     }
 
     /**
@@ -497,16 +518,18 @@ object VkAuth {
         revoke: Boolean = true,
         apiVersion: Double = VK_API_VERSION_DEFAULT
     ) {
-        login(activity, AuthParams(
-            clientId = clientId,
-            responseType = responseType,
-            scope = scope,
-            redirectUri = redirectUri,
-            display = display,
-            state = state,
-            revoke = revoke,
-            apiVersion = apiVersion
-        ))
+        login(
+            activity, AuthParams(
+                clientId = clientId,
+                responseType = responseType,
+                scope = scope,
+                redirectUri = redirectUri,
+                display = display,
+                state = state,
+                revoke = revoke,
+                apiVersion = apiVersion
+            )
+        )
     }
 
     /**
@@ -554,16 +577,18 @@ object VkAuth {
         revoke: Boolean = true,
         apiVersion: Double = VK_API_VERSION_DEFAULT
     ) {
-        loginWithWebView(activity, AuthParams(
-            clientId = clientId,
-            responseType = responseType,
-            scope = scopes.sumBy { it.intValue }.toString(),
-            redirectUri = redirectUri,
-            display = display,
-            state = state,
-            revoke = revoke,
-            apiVersion = apiVersion
-        ))
+        loginWithWebView(
+            activity, AuthParams(
+                clientId = clientId,
+                responseType = responseType,
+                scope = scopes.sumBy { it.intValue }.toString(),
+                redirectUri = redirectUri,
+                display = display,
+                state = state,
+                revoke = revoke,
+                apiVersion = apiVersion
+            )
+        )
     }
 
     /**
@@ -588,16 +613,18 @@ object VkAuth {
         revoke: Boolean = true,
         apiVersion: Double = VK_API_VERSION_DEFAULT
     ) {
-        loginWithWebView(activity, AuthParams(
-            clientId = clientId,
-            responseType = responseType,
-            scope = scope,
-            redirectUri = redirectUri,
-            display = display,
-            state = state,
-            revoke = revoke,
-            apiVersion = apiVersion
-        ))
+        loginWithWebView(
+            activity, AuthParams(
+                clientId = clientId,
+                responseType = responseType,
+                scope = scope,
+                redirectUri = redirectUri,
+                display = display,
+                state = state,
+                revoke = revoke,
+                apiVersion = apiVersion
+            )
+        )
     }
 
     /**
@@ -623,16 +650,18 @@ object VkAuth {
         revoke: Boolean = true,
         apiVersion: Double = VK_API_VERSION_DEFAULT
     ) {
-        loginWithApp(activity, AuthParams(
-            clientId = clientId,
-            responseType = responseType,
-            scope = scopes.sumBy { it.intValue }.toString(),
-            redirectUri = redirectUri,
-            display = display,
-            state = state,
-            revoke = revoke,
-            apiVersion = apiVersion
-        ))
+        loginWithApp(
+            activity, AuthParams(
+                clientId = clientId,
+                responseType = responseType,
+                scope = scopes.sumBy { it.intValue }.toString(),
+                redirectUri = redirectUri,
+                display = display,
+                state = state,
+                revoke = revoke,
+                apiVersion = apiVersion
+            )
+        )
     }
 
     /**
@@ -658,16 +687,18 @@ object VkAuth {
         revoke: Boolean = true,
         apiVersion: Double = VK_API_VERSION_DEFAULT
     ) {
-        loginWithApp(activity, AuthParams(
-            clientId = clientId,
-            responseType = responseType,
-            scope = scope,
-            redirectUri = redirectUri,
-            display = display,
-            state = state,
-            revoke = revoke,
-            apiVersion = apiVersion
-        ))
+        loginWithApp(
+            activity, AuthParams(
+                clientId = clientId,
+                responseType = responseType,
+                scope = scope,
+                redirectUri = redirectUri,
+                display = display,
+                state = state,
+                revoke = revoke,
+                apiVersion = apiVersion
+            )
+        )
     }
 
     /**
@@ -728,7 +759,7 @@ object VkAuth {
         val clientId: Int,
         val responseType: ResponseType,
         val scope: String = "",
-        val redirectUri: String = VK_REDIRECT_URI_DEFAULT,
+        val redirectUri: String? = null,
         val display: Display = Display.Mobile,
         val state: String = "",
         val revoke: Boolean = true,
@@ -738,7 +769,7 @@ object VkAuth {
             clientId: Int,
             responseType: ResponseType,
             scopes: List<Scope> = listOf(),
-            redirectUri: String = VK_REDIRECT_URI_DEFAULT,
+            redirectUri: String? = null,
             display: Display = Display.Mobile,
             state: String = "",
             revoke: Boolean = true,
@@ -786,13 +817,12 @@ object VkAuth {
          */
         @CheckResult
         fun asQuery(): String {
-            val map = mutableMapOf(
-                "client_id" to clientId.toString(),
-                "redirect_uri" to redirectUri,
-                "response_type" to responseType.stringValue,
-                "display" to display.stringValue,
-                "v" to apiVersion.toString()
-            )
+            val map = mutableMapOf<String, String>()
+            map["client_id"] = clientId.toString()
+            redirectUri?.let { map["redirect_uri"] = it }
+            map["response_type"] = responseType.stringValue
+            map["display"] = display.stringValue
+            map["v"] = apiVersion.toString()
 
             if (scope.isNotEmpty()) {
                 map["scope"] = scope

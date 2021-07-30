@@ -22,7 +22,7 @@ internal class VkAuthActivity : AppCompatActivity() {
         setContentView(R.layout.activity_vk_auth)
 
         lastQuery = intent.getStringExtra(EXTRA_AUTH_QUERY) ?: return finish()
-        lastRedirectUri = intent.getStringExtra(EXTRA_AUTH_REDIRECT_URI) ?: return finish()
+        lastRedirectUri = intent.getStringExtra(EXTRA_AUTH_REDIRECT_URI) ?: VkAuth.VK_REDIRECT_URI_DEFAULT
 
         loadUrl("$VK_AUTH_BASE_URL?$lastQuery")
     }

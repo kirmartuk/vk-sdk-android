@@ -10,7 +10,7 @@ class VkAuthParamsTest {
             1, VkAuth.ResponseType.AccessToken,
             "offline"
         )
-        val expectedUri = "client_id=1&redirect_uri=https://oauth.vk.com/blank.html&response_type=token&display=mobile&v=${VkAuth.VK_API_VERSION_DEFAULT}&scope=offline&revoke=1"
+        val expectedUri = "client_id=1&response_type=token&display=mobile&v=${VkAuth.VK_API_VERSION_DEFAULT}&scope=offline&revoke=1"
 
         assertEquals(expectedUri, params.asQuery())
     }

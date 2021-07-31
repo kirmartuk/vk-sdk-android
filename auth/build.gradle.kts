@@ -45,11 +45,11 @@ android {
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation(kotlin("stdlib-jdk8", Config.Versions.Kotlin.kotlin))
-    
+
     implementation("androidx.appcompat:appcompat:${Config.Versions.Android.appCompat}")
     implementation("androidx.core:core-ktx:${Config.Versions.Android.coreKtx}")
     implementation("androidx.constraintlayout:constraintlayout:${Config.Versions.Android.constraintLayout}")
-    
+
     testImplementation("junit:junit:${Config.Versions.Test.junit}")
 
     androidTestImplementation("androidx.test:runner:${Config.Versions.AndroidTest.runner}")
@@ -59,3 +59,4 @@ dependencies {
 }
 
 apply(from = "$rootDir/gradle/mavenpublish.gradle")
+apply(plugin = "com.github.dcendents.android-maven")

@@ -4,7 +4,7 @@ object Config {
             const val kotlin = "1.3.72"
         }
         object Plugin {
-            const val androidGradle = "3.6.1"
+            const val androidGradle = "4.2.2"
             const val publish = "0.11.1"
 
             // https://github.com/Kotlin/dokka/issues/819

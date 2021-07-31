@@ -10,6 +10,7 @@ buildscript {
         classpath("com.android.tools.build:gradle:${Config.Versions.Plugin.androidGradle}")
         classpath("org.jetbrains.dokka:dokka-gradle-plugin:${Config.Versions.Plugin.dokka}")
         classpath("com.vanniktech:gradle-maven-publish-plugin:${Config.Versions.Plugin.publish}")
+        classpath("com.github.dcendents:android-maven-gradle-plugin:2.1")
     }
 }
 
@@ -28,6 +29,7 @@ allprojects {
         mavenCentral()
         google()
         jcenter()
+        maven(url = "https://jitpack.io")
     }
 
     group = project.property("GROUP").toString()
